@@ -2,10 +2,7 @@ require('../models/database');
 const Category = require('../models/Category');
 const Recipe = require('../models/Recipe');
 
-/**
- * GET /
- * Homepage 
-*/
+
 exports.homepage = async(req, res) => {
   try {
     const limitNumber = 5;
@@ -23,14 +20,11 @@ exports.homepage = async(req, res) => {
   }
 }
 
-/**
- * GET /categories
- * Categories 
-*/
 exports.exploreCategories = async(req, res) => {
   try {
     const limitNumber = 20;
     const categories = await Category.find({}).limit(limitNumber);
+    // console.log(categories);
     res.render('categories', { title: 'Cooking Blog - Categoreis', categories } );
   } catch (error) {
     res.satus(500).send({message: error.message || "Error Occured" });
@@ -38,10 +32,7 @@ exports.exploreCategories = async(req, res) => {
 } 
 
 
-/**
- * GET /categories/:id
- * Categories By Id
-*/
+
 exports.exploreCategoriesById = async(req, res) => { 
   try {
     let categoryId = req.params.id;
@@ -53,10 +44,6 @@ exports.exploreCategoriesById = async(req, res) => {
   }
 } 
  
-/**
- * GET /recipe/:id
- * Recipe 
-*/
 exports.exploreRecipe = async(req, res) => {
   try {
     let recipeId = req.params.id;
@@ -68,10 +55,6 @@ exports.exploreRecipe = async(req, res) => {
 } 
 
 
-/**
- * POST /search
- * Search 
-*/
 exports.searchRecipe = async(req, res) => {
   try {
     let searchTerm = req.body.searchTerm;
@@ -83,10 +66,7 @@ exports.searchRecipe = async(req, res) => {
   
 }
 
-/**
- * GET /explore-latest
- * Explplore Latest 
-*/
+
 exports.exploreLatest = async(req, res) => {
   try {
     const limitNumber = 20;
@@ -99,10 +79,6 @@ exports.exploreLatest = async(req, res) => {
 
 
 
-/**
- * GET /explore-random
- * Explore Random as JSON
-*/
 exports.exploreRandom = async(req, res) => {
   try {
     let count = await Recipe.find().countDocuments();
@@ -112,23 +88,16 @@ exports.exploreRandom = async(req, res) => {
   } catch (error) {
     res.satus(500).send({message: error.message || "Error Occured" });
   }
-} 
+}
 
 
-/**
- * GET /submit-recipe
- * Submit Recipe
-*/
 exports.submitRecipe = async(req, res) => {
   const infoErrorsObj = req.flash('infoErrors');
   const infoSubmitObj = req.flash('infoSubmit');
   res.render('submit-recipe', { title: 'Cooking Blog - Submit Recipe', infoErrorsObj, infoSubmitObj  } );
 }
 
-/**
- * POST /submit-recipe
- * Submit Recipe
-*/
+
 exports.submitRecipeOnPost = async(req, res) => {
   try {
 
@@ -170,106 +139,3 @@ exports.submitRecipeOnPost = async(req, res) => {
     res.redirect('/submit-recipe');
   }
 }
-
-
-
-
-// Delete Recipe
-// async function deleteRecipe(){
-//   try {
-//     await Recipe.deleteOne({ name: 'New Recipe From Form' });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-// deleteRecipe();
-
-
-// Update Recipe
-// async function updateRecipe(){
-//   try {
-//     const res = await Recipe.updateOne({ name: 'New Recipe' }, { name: 'New Recipe Updated' });
-//     res.n; // Number of documents matched
-//     res.nModified; // Number of documents modified
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-// updateRecipe();
-
-
-/**
- * Dummy Data Example 
-*/
-
-// async function insertDymmyCategoryData(){
-//   try {
-//     await Category.insertMany([
-//       {
-//         "name": "Thai",
-//         "image": "thai-food.jpg"
-//       },
-//       {
-//         "name": "American",
-//         "image": "american-food.jpg"
-//       }, 
-//       {
-//         "name": "Chinese",
-//         "image": "chinese-food.jpg"
-//       },
-//       {
-//         "name": "Mexican",
-//         "image": "mexican-food.jpg"
-//       }, 
-//       {
-//         "name": "Indian",
-//         "image": "indian-food.jpg"
-//       },
-//       {
-//         "name": "Spanish",
-//         "image": "spanish-food.jpg"
-//       }
-//     ]);
-//   } catch (error) {
-//     console.log('err', + error)
-//   }
-// }
-
-// insertDymmyCategoryData();
-
-
-// async function insertDymmyRecipeData(){
-//   try {
-//     await Recipe.insertMany([
-//       { 
-//         "name": "Recipe Name Goes Here",
-//         "description": `Recipe Description Goes Here`,
-//         "email": "recipeemail@raddy.co.uk",
-//         "ingredients": [
-//           "1 level teaspoon baking powder",
-//           "1 level teaspoon cayenne pepper",
-//           "1 level teaspoon hot smoked paprika",
-//         ],
-//         "category": "American", 
-//         "image": "southern-friend-chicken.jpg"
-//       },
-//       { 
-//         "name": "Recipe Name Goes Here",
-//         "description": `Recipe Description Goes Here`,
-//         "email": "recipeemail@raddy.co.uk",
-//         "ingredients": [
-//           "1 level teaspoon baking powder",
-//           "1 level teaspoon cayenne pepper",
-//           "1 level teaspoon hot smoked paprika",
-//         ],
-//         "category": "American", 
-//         "image": "southern-friend-chicken.jpg"
-//       },
-//     ]);
-//   } catch (error) {
-//     console.log('err', + error)
-//   }
-// }
-
-// insertDymmyRecipeData();
-
